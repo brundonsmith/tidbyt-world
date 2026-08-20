@@ -8,8 +8,9 @@ import {
     FRAME_HEIGHT,
     blit,
 } from "./frame.ts";
-import { guy } from "./guy.ts";
+import { guy, guyHeight } from "./guy.ts";
 import { square_size, type WorldState } from "./world-state.ts";
+import { groundColor, groundHeight, skyColor } from "./world.ts";
 
 // const BACKGROUND = hex("#0b1021");
 const BORDER = hex("#22305e");
@@ -21,12 +22,15 @@ const BORDER = hex("#22305e");
 export function worldView(worldState: WorldState, now: number): Frame {
     const frame = createFrame();
 
-    strokeRect(frame, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, BORDER);
+    // fillRect(frame, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, skyColor);
 
-    fillRect(frame, worldState.x, worldState.y, square_size, square_size, WHITE)
+    // fillRect(frame, worldState.x, worldState.y, square_size, square_size, WHITE)
 
-    const blinking = (now % 1000) < 200
-    blit(frame, blinking ? guy[1]! : guy[0]!, 29, 17)
+    fillRect(frame, 0, FRAME_HEIGHT - groundHeight, FRAME_WIDTH, groundHeight, groundColor)
+
+    const [base, blink] = guy
+    const blinking = (now % 1000) < 50
+    blit(frame, blinking ? blink! : base!, worldState.x, FRAME_HEIGHT - groundHeight - guyHeight)
 
     return frame;
 }

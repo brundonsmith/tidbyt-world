@@ -2,6 +2,7 @@ import type { Frame } from "./src/frame.ts";
 import { encodeWebP } from "./src/webp/index.ts";
 import { frameDurationMs, start, subFrames, tronbytDwellMs, updateWorld, worldState } from "./src/world-state.ts";
 import { worldView } from "./src/world-view.ts";
+import { sunHeight } from "./src/world.ts";
 
 const PORT = Number(Bun.env.PORT ?? 3000);
 
@@ -28,7 +29,7 @@ const server = Bun.serve({
             "content-type": "image/webp",
             "cache-control": "no-store",
             "Tronbyt-Dwell-Secs": String(tronbytDwellMs / 1_000),
-            "Tronbyt-Brightness": "50"
+            "Tronbyt-Brightness": String(sunHeight() * 20 + 10)
           },
         });
       },

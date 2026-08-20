@@ -33,7 +33,9 @@ for (let y = 0; y < base.length; y++) {
 }
 
 const blink = JSON.parse(JSON.stringify(flipped)) as Frame
-blink[2][4] = TAN
-blink[4][4] = TAN
+blink[2]![4] = TAN
+blink[4]![4] = TAN
 
 export const guy: Frame[] = [flipped, blink]
+export const guyHeight = base.length
+export const guyWidth = flipped.length
