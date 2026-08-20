@@ -54,6 +54,7 @@ export function updateWorld(currentWorldState: WorldState, delta_ms: number): Wo
 
 export const tronbytDwellMs = 1_000
 export const subFrames = 10
+export const frameDurationMs = tronbytDwellMs / subFrames
 
 export type WorldState = typeof INITIAL_WORLD_STATE
 
@@ -71,10 +72,10 @@ export let worldState = tryLoad() ?? INITIAL_WORLD_STATE
 
 export async function start() {
     // let last = performance.now();
-    for await (const _ of setInterval(tronbytDwellMs / subFrames)) {
+    for await (const _ of setInterval(frameDurationMs)) {
         // const now = performance.now();
 
-        worldState = updateWorld(worldState, tronbytDwellMs / subFrames);
+        worldState = updateWorld(worldState, frameDurationMs);
 
         await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
         // last = now;

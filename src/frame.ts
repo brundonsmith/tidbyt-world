@@ -11,7 +11,7 @@ export const FRAME_HEIGHT = 32;
  * per row (y). Frames are plain arrays, so `frame[x][y] = someColor` works
  * directly; the helpers below are just conveniences on top of that.
  */
-export type Frame = Color[][];
+export type Frame = (Color | null)[][];
 
 export interface FrameSize {
   readonly width: number;
@@ -53,7 +53,7 @@ export function setPixel(frame: Frame, x: number, y: number, color: Color): void
 }
 
 export function getPixel(frame: Frame, x: number, y: number): Color | undefined {
-  return frame[Math.round(x)]?.[Math.round(y)];
+  return frame[Math.round(x)]?.[Math.round(y)] ?? undefined;
 }
 
 export function fill(frame: Frame, color: Color): void {
@@ -126,7 +126,7 @@ export function drawLine(
   const stepY = y < endY ? 1 : -1;
   let error = dx + dy;
 
-  for (;;) {
+  for (; ;) {
     setPixel(frame, x, y, color);
     if (x === endX && y === endY) break;
     const doubled = 2 * error;
@@ -177,7 +177,10 @@ export function blit(target: Frame, source: Frame, x: number, y: number): void {
   const { width, height } = frameSize(source);
   for (let sx = 0; sx < width; sx++) {
     for (let sy = 0; sy < height; sy++) {
-      setPixel(target, x + sx, y + sy, source[sx]![sy]!);
+      const sourcePixel = source[sx]?.[sy]
+      if (sourcePixel != null) {
+        setPixel(target, x + sx, y + sy, sourcePixel);
+      }
     }
   }
 }
