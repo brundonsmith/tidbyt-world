@@ -1,0 +1,19 @@
+{
+  "name": "tidbyt-world",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --hot index.ts",
+    "start": "bun index.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "restart-service": "systemctl --user restart tidbyt-world"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
