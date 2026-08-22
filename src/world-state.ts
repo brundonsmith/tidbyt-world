@@ -54,7 +54,7 @@ export function updateWorld(currentWorldState: WorldState, delta_ms: number): Wo
     //     }
     // }
 
-    if (Math.abs(currentWorldState.destination - currentWorldState.x) < 0.2) {
+    if (Math.abs(currentWorldState.destination - currentWorldState.x) < 0.45) {
         return { ...currentWorldState, x: Math.round(currentWorldState.x), destination: Math.round(Math.random() * (64 - guyWidth)) }
     } else if (currentWorldState.destination > currentWorldState.x) {
         return { ...currentWorldState, x: currentWorldState.x + 4 * delta_ms / 1000 }
