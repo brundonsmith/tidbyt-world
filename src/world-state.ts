@@ -1,7 +1,6 @@
 import { readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import { setInterval } from "node:timers/promises";
-import { guyWidth } from "./guy";
 
 const INITIAL_WORLD_STATE = {
     // x: 1,
@@ -55,7 +54,7 @@ export function updateWorld(currentWorldState: WorldState, delta_ms: number): Wo
     // }
 
     if (Math.abs(currentWorldState.destination - currentWorldState.x) < 0.45) {
-        return { ...currentWorldState, x: Math.round(currentWorldState.x), destination: Math.round(Math.random() * (64 - guyWidth)) }
+        return { ...currentWorldState, x: Math.round(currentWorldState.x), destination: Math.round(Math.random() * (64 - 7)) } // guy width
     } else if (currentWorldState.destination > currentWorldState.x) {
         return { ...currentWorldState, x: currentWorldState.x + 4 * delta_ms / 1000 }
     } else if (currentWorldState.destination < currentWorldState.x) {

@@ -1,4 +1,4 @@
-import { hex, mix, ORANGE, CYAN, WHITE } from "../color.ts";
+import { hex, mix, ORANGE, CYAN, WHITE } from "../utils/color.ts";
 import {
   createFrame,
   drawLine,
@@ -9,7 +9,7 @@ import {
   type Frame,
   FRAME_WIDTH,
   FRAME_HEIGHT,
-} from "../frame.ts";
+} from "../utils/frame.ts";
 
 const BACKGROUND = hex("#0b1021");
 const BORDER = hex("#22305e");

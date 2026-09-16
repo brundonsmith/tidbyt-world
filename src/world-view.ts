@@ -1,4 +1,4 @@
-import { hex, CYAN, WHITE } from "./color.ts";
+import { hex, CYAN, WHITE } from "./utils/color.ts";
 import {
     createFrame,
     fillRect,
@@ -7,8 +7,8 @@ import {
     FRAME_WIDTH,
     FRAME_HEIGHT,
     blit,
-} from "./frame.ts";
-import { loadSprite } from "./png.ts";
+} from "./utils/frame.ts";
+import { loadSprite } from "./utils/png.ts";
 // import { guy, guyHeight } from "./guy.ts";
 import { square_size, type WorldState } from "./world-state.ts";
 import { groundColor, groundHeight, skyColor } from "./world.ts";

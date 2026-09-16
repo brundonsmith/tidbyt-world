@@ -1,4 +1,4 @@
-import { rgb } from "./color";
+import { rgb } from "./utils/color";
 
 export function sunHeight(date = new Date()) {
     const h = date.getHours() + date.getMinutes() / 60;

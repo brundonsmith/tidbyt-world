@@ -1,5 +1,5 @@
-import type { Frame } from "./src/frame.ts";
-import { encodeWebP } from "./src/webp/index.ts";
+import type { Frame } from "./src/utils/frame.ts";
+import { encodeWebP } from "./src/utils/webp/index.ts";
 import { frameDurationMs, start, subFrames, tronbytDwellMs, updateWorld, worldState } from "./src/world-state.ts";
 import { worldView } from "./src/world-view.ts";
 import { sunHeight } from "./src/world.ts";
