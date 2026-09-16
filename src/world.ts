@@ -7,7 +7,7 @@ export function sunHeight(date = new Date()) {
     return t < 0 || t > 1 ? 0 : Math.sin(t * Math.PI);
 }
 
-export const groundHeight = 2
+export const groundHeight = 0
 
 export const groundColor = rgb(55, 148, 110)
 
