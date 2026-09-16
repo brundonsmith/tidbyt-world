@@ -178,7 +178,7 @@ export function blit(target: Frame, source: Frame, x: number, y: number): void {
   for (let sx = 0; sx < width; sx++) {
     for (let sy = 0; sy < height; sy++) {
       const sourcePixel = source[sx]?.[sy]
-      if (sourcePixel != null) {
+      if (sourcePixel != null && sourcePixel.a > 0) { // TODO: Actual alpha blending
         setPixel(target, x + sx, y + sy, sourcePixel);
       }
     }
