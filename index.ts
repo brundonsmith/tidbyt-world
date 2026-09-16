@@ -1,4 +1,5 @@
 import type { Frame } from "./src/utils/frame.ts";
+import { startWeatherPolling } from "./src/utils/weather.ts";
 import { encodeWebP } from "./src/utils/webp/index.ts";
 import { frameDurationMs, start, subFrames, tronbytDwellMs, updateWorld, worldState } from "./src/world-state.ts";
 import { worldView } from "./src/world-view.ts";
@@ -42,5 +43,6 @@ const server = Bun.serve({
 console.log(`Listening on ${server.url}`);
 
 void start()
+void startWeatherPolling()
 
 console.log('Started world!')

@@ -4,13 +4,16 @@ type Sky = "clear" | "cloudy" | "rain" | "snow";
 
 export let sky: Sky = "clear"
 
-export async function start() {
+const HOME = [30.34368, 97.73773] as const
+
+export async function startWeatherPolling() {
+    sky = await getSky(HOME)
     for await (const _ of setInterval(15 * 60 * 1_000)) {
-        sky = await getSky(30.26426, 97.74750)
+        sky = await getSky(HOME)
     }
 }
 
-export async function getSky(lat: number, lon: number): Promise<Sky> {
+export async function getSky([lat, lon]: readonly [number, number]): Promise<Sky> {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weather_code`;
     const res = await fetch(url);
     const { current } = await res.json() as any;
@@ -24,3 +27,18 @@ export async function getSky(lat: number, lon: number): Promise<Sky> {
     if (code >= 95) return "rain";
     return "cloudy";
 }
+
+// Code	Description
+// 0	Clear sky
+// 1, 2, 3	Mainly clear, partly cloudy, and overcast
+// 45, 48	Fog and depositing rime fog
+// 51, 53, 55	Drizzle: Light, moderate, and dense intensity
+// 56, 57	Freezing Drizzle: Light and dense intensity
+// 61, 63, 65	Rain: Slight, moderate and heavy intensity
+// 66, 67	Freezing Rain: Light and heavy intensity
+// 71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
+// 77	Snow grains
+// 80, 81, 82	Rain showers: Slight, moderate, and violent
+// 85, 86	Snow showers slight and heavy
+// 95 *	Thunderstorm: Slight or moderate
+// 96, 99 *	Thunderstorm with slight and heavy hail
