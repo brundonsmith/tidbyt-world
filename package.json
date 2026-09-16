@@ -8,12 +8,17 @@
     "start": "bun index.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
-    "restart-service": "systemctl --user restart tidbyt-world"
+    "restart-service": "systemctl --user restart tidbyt-world",
+    "status": "systemctl --user status tidbyt-world"
   },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/pngjs": "^6.0.5",
+    "pngjs": "^7.0.0"
   }
 }
