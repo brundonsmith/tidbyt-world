@@ -91,7 +91,10 @@ export async function start() {
 
         worldState = updateWorld(worldState, frameDurationMs);
 
-        await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
+        if (Date.now() % 5000 < 100) {
+            await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
+        }
+
         // last = now;
     }
 }
