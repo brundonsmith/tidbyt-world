@@ -7,15 +7,24 @@ export let sky: Sky = "clear"
 const HOME = [30.34368, 97.73773] as const
 
 export async function startWeatherPolling() {
-    sky = await getSky(HOME)
+    await refreshSky()
     for await (const _ of setInterval(15 * 60 * 1_000)) {
+        await refreshSky()
+    }
+}
+
+async function refreshSky() {
+    try {
         sky = await getSky(HOME)
+    } catch (err) {
+        console.error(`[${new Date().toISOString()}] weather fetch failed:`, err)
     }
 }
 
 export async function getSky([lat, lon]: readonly [number, number]): Promise<Sky> {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weather_code`;
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+    if (!res.ok) throw new Error(`open-meteo responded ${res.status}`);
     const { current } = await res.json() as any;
     const code: number = current.weather_code;
 

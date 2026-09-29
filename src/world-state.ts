@@ -89,10 +89,14 @@ export async function start() {
     for await (const _ of setInterval(frameDurationMs)) {
         // const now = performance.now();
 
-        worldState = updateWorld(worldState, frameDurationMs);
+        try {
+            worldState = updateWorld(worldState, frameDurationMs);
 
-        if (Date.now() % 5000 < 100) {
-            await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
+            if (Date.now() % 5000 < 100) {
+                await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
+            }
+        } catch (err) {
+            console.error(`[${new Date().toISOString()}] world update failed:`, err)
         }
 
         // last = now;

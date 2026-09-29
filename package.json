@@ -9,7 +9,8 @@
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "restart-service": "systemctl --user restart tidbyt-world",
-    "status": "systemctl --user status tidbyt-world"
+    "status": "systemctl --user status tidbyt-world",
+    "logs": "tail -n 100 logs/service.log"
   },
   "devDependencies": {
     "@types/bun": "latest"

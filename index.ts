@@ -5,6 +5,20 @@ import { frameDurationMs, start, subFrames, tronbytDwellMs, updateWorld, worldSt
 import { worldView } from "./src/world-view.ts";
 import { sunHeight } from "./src/world.ts";
 
+// `bun --hot` keeps the process alive after an uncaught error, which leaves the
+// world loop dead while the server keeps serving a frozen frame. Exit instead so
+// systemd restarts us. Guarded because hot reloads re-run this module.
+const g = globalThis as { crashHandlersInstalled?: boolean };
+if (!g.crashHandlersInstalled) {
+  g.crashHandlersInstalled = true;
+  const crash = (err: unknown) => {
+    console.error(`[${new Date().toISOString()}] fatal:`, err);
+    process.exit(1);
+  };
+  process.on("uncaughtException", crash);
+  process.on("unhandledRejection", crash);
+}
+
 const PORT = Number(Bun.env.PORT ?? 3000);
 
 const server = Bun.serve({
