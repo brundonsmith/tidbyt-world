@@ -4,7 +4,7 @@ type Sky = "clear" | "cloudy" | "rain" | "snow";
 
 export let sky: Sky = "clear"
 
-const HOME = [30.34368, 97.73773] as const
+const HOME = [30.34368, -97.73773] as const
 
 export async function startWeatherPolling() {
     await refreshSky()
