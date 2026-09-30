@@ -21,9 +21,6 @@ const guyHeight = guy![0]!.length
 
 const [clouds, rain, sun1, sun2, moon] = await loadSprite(import.meta.dir + '/../sprites/weather.png', 5)
 
-const flipHorizontal = (sprite: readonly Color[][]) =>
-    sprite.toReversed()
-
 /**
  * Two frames of simple geometry that swap places, so the animation is
  * obviously moving when rendered.
@@ -38,12 +35,17 @@ export function worldView(worldState: WorldState, now: number): Frame {
     fillRect(frame, 0, FRAME_HEIGHT - groundHeight, FRAME_WIDTH, groundHeight, groundColor)
 
     const blinking = (now % 1000) < 50
-    const guyWalkingDirection = worldState.destination - worldState.x > 2 ? 'right' : worldState.destination - worldState.x < -2 ? 'left' : undefined
+    const dist = 0
+    const guyWalkingDirection = worldState.destination - worldState.x > dist
+        ? 'right'
+        : worldState.destination - worldState.x < -1 * dist
+            ? 'left'
+            : undefined
     const walkFrameFlip = (now % 1000) < 500
     const guySprite = !guyWalkingDirection
         ? (blinking ? guyBlink! : guy!)
         : guyWalkingDirection === 'left'
-            ? flipHorizontal(walkFrameFlip ? guyWalk2! : guyWalk1!)
+            ? (walkFrameFlip ? guyWalk2! : guyWalk1!).toReversed()
             : walkFrameFlip ? guyWalk2! : guyWalk1!
     blit(frame, guySprite, worldState.x, FRAME_HEIGHT - groundHeight - guyHeight)
 
