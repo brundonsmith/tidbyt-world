@@ -1,9 +1,12 @@
 import type { Frame } from "./src/utils/frame.ts";
+import { log } from "./src/utils/log.ts";
 import { startWeatherPolling } from "./src/utils/weather.ts";
 import { encodeWebP } from "./src/utils/webp/index.ts";
 import { frameDurationMs, start, subFrames, tronbytDwellMs, updateWorld, worldState } from "./src/world-state.ts";
 import { worldView } from "./src/world-view.ts";
 import { sunHeight } from "./src/world.ts";
+
+log('--- Starting server ---')
 
 // `bun --hot` keeps the process alive after an uncaught error, which leaves the
 // world loop dead while the server keeps serving a frozen frame. Exit instead so
@@ -12,7 +15,7 @@ const g = globalThis as { crashHandlersInstalled?: boolean };
 if (!g.crashHandlersInstalled) {
   g.crashHandlersInstalled = true;
   const crash = (err: unknown) => {
-    console.error(`[${new Date().toISOString()}] fatal:`, err);
+    log('Fatal error', err)
     process.exit(1);
   };
   process.on("uncaughtException", crash);
@@ -54,9 +57,9 @@ const server = Bun.serve({
   fetch: () => new Response("Not found", { status: 404 }),
 });
 
-console.log(`Listening on ${server.url}`);
+log(`Listening on ${server.url}`);
 
 void start()
 void startWeatherPolling()
 
-console.log('Started world!')
+log('Started world!')

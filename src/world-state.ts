@@ -1,3 +1,4 @@
+import { log } from "node:console";
 import { readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import { setInterval } from "node:timers/promises";
@@ -16,43 +17,6 @@ const INITIAL_WORLD_STATE = {
 export const square_size = 10
 
 export function updateWorld(currentWorldState: WorldState, delta_ms: number): WorldState {
-    // const distance = pixels_per_second * delta_ms / 1000
-
-    // switch (currentWorldState.direction) {
-    //     case 'east': {
-    //         const bound = 64 - 1 - square_size
-    //         if (currentWorldState.x < bound) {
-    //             return { ...currentWorldState, x: Math.min(currentWorldState.x + distance, bound) }
-    //         } else {
-    //             return updateWorld({ ...currentWorldState, direction: 'south' }, delta_ms)
-    //         }
-    //     }
-    //     case "south": {
-    //         const bound = 32 - 1 - square_size
-    //         if (currentWorldState.y < bound) {
-    //             return { ...currentWorldState, y: Math.min(currentWorldState.y + distance, bound) }
-    //         } else {
-    //             return updateWorld({ ...currentWorldState, direction: 'west' }, delta_ms)
-    //         }
-    //     }
-    //     case "west": {
-    //         const bound = 1
-    //         if (currentWorldState.x > bound) {
-    //             return { ...currentWorldState, x: Math.max(currentWorldState.x - distance, bound) }
-    //         } else {
-    //             return updateWorld({ ...currentWorldState, direction: 'north' }, delta_ms)
-    //         }
-    //     }
-    //     case "north": {
-    //         const bound = 1
-    //         if (currentWorldState.y > bound) {
-    //             return { ...currentWorldState, y: Math.max(currentWorldState.y - distance, bound) }
-    //         } else {
-    //             return updateWorld({ ...currentWorldState, direction: 'east' }, delta_ms)
-    //         }
-    //     }
-    // }
-
     if (Math.abs(currentWorldState.destination - currentWorldState.x) < 0.45) {
         return { ...currentWorldState, x: Math.round(currentWorldState.x), destination: Math.round(Math.random() * (64 - 7)) } // guy width
     } else if (currentWorldState.destination > currentWorldState.x) {
@@ -93,10 +57,14 @@ export async function start() {
             worldState = updateWorld(worldState, frameDurationMs);
 
             if (Date.now() % 5000 < 100) {
-                await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
+                try {
+                    await writeFile(worldStatePath, JSON.stringify(worldState, null, 2))
+                } catch (err) {
+                    log('Writing world state to disk failed', err)
+                }
             }
         } catch (err) {
-            console.error(`[${new Date().toISOString()}] world update failed:`, err)
+            log('World update failed', err)
         }
 
         // last = now;

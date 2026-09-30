@@ -1,14 +1,17 @@
 import { setInterval } from "node:timers/promises";
+import { log } from "./log";
 
 type Sky = "clear" | "cloudy" | "rain" | "snow";
 
-export let sky: Sky = "clear"
+export let sky: Sky | null = null
 
 const HOME = [30.34368, -97.73773] as const
 
 export async function startWeatherPolling() {
+    log('Loading weather...')
     await refreshSky()
     for await (const _ of setInterval(15 * 60 * 1_000)) {
+        log('Refreshing weather...')
         await refreshSky()
     }
 }
@@ -16,8 +19,9 @@ export async function startWeatherPolling() {
 async function refreshSky() {
     try {
         sky = await getSky(HOME)
+        log(`Weather is now '${sky}'`)
     } catch (err) {
-        console.error(`[${new Date().toISOString()}] weather fetch failed:`, err)
+        log('Weather fetch failed', err)
     }
 }
 
